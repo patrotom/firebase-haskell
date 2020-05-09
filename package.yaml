@@ -1,10 +1,10 @@
 name:                persistent-firebase
 version:             0.1.0.0
 github:              "patrotom/persistent-firebase"
-license:             BSD3
-author:              "Tomas Patro"
+license:             MIT
+author:              "Tomáš Patro"
 maintainer:          "tomas.patro@gmail.com"
-copyright:           "Copyright 2018 Tomas Patro"
+copyright:           "Copyright 2020 Tomas Patro"
 
 extra-source-files:
 - README.md
@@ -24,17 +24,6 @@ dependencies:
 
 library:
   source-dirs: src
-
-executables:
-  persistent-firebase-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - persistent-firebase
 
 tests:
   persistent-firebase-test:

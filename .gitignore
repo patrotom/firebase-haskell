@@ -1,16 +1,8 @@
-### Stack ###
-
-.stack-work/
-*~
-
 ### Code ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 ### Haskell ###
+*~
 dist
 dist-*
 cabal-dev
@@ -33,6 +25,8 @@ cabal.project.local
 cabal.project.local~
 .HTF/
 .ghc.environment.*
+*.cabal
+stack.yaml.lock
 
 ### Misc ###
 
