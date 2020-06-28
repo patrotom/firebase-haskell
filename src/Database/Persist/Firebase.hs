@@ -13,36 +13,8 @@ import Database.Persist.Firebase.Types
 import qualified Database.Persist.Firebase.Utils as U
 import qualified Data.Map as M
 import qualified Data.Text as T
+import qualified Database.Persist.Firebase.Requests as FR
 
-
-fbRead :: (MonadHttp m, FromJSON r) => Url s    ->
-                                       Option s ->
-                                       m (JsonResponse r)
-fbRead url = req GET url NoReqBody jsonResponse
-
-fbWrite :: (MonadHttp m, FromJSON r) => Url s         ->
-                                        Option s      ->
-                                        FbBody        ->
-                                        m (JsonResponse r)
-fbWrite url aPar EmptyBody = req PUT url NoReqBody jsonResponse aPar
-fbWrite url aPar (Body b)  = req PUT url (ReqBodyJson b) jsonResponse aPar
-
-fbPush :: (MonadHttp m, FromJSON r) => Url s         ->
-                                       Option s      ->
-                                       FbBody        ->
-                                       m (JsonResponse r)
-fbPush url aPar EmptyBody = req POST url NoReqBody jsonResponse aPar
-fbPush url aPar (Body b)  = req POST url (ReqBodyJson b) jsonResponse aPar
-
-fbUpdate :: (MonadHttp m, FromJSON r) => Url s         ->
-                                         Option s      ->
-                                         FbBody        ->
-                                         m (JsonResponse r)
-fbUpdate url aPar EmptyBody = req PATCH url NoReqBody jsonResponse aPar
-fbUpdate url aPar (Body b)  = req PATCH url (ReqBodyJson b) jsonResponse aPar
-
-fbDelete :: (MonadHttp m, FromJSON r) => Url s -> m (JsonResponse r)
-fbDelete url = req DELETE url NoReqBody jsonResponse mempty
 
 fbReq :: FbRequest   ->
          FbConfig    ->
@@ -62,11 +34,11 @@ fbReqP :: (MonadHttp m, FromJSON r) => FbRequest   ->
                                        m (JsonResponse r)
 fbReqP req conf loc qr body =
   case req of
-    Read   -> fbRead url par
-    Write  -> fbWrite url aPar body
-    Push   -> fbPush url aPar body
-    Update -> fbUpdate url aPar body
-    Delete -> fbDelete url
+    Read   -> FR.fbRead url par
+    Write  -> FR.fbWrite url aPar body
+    Push   -> FR.fbPush url aPar body
+    Update -> FR.fbUpdate url aPar body
+    Delete -> FR.fbDelete url
   where url  = U.fbUrl (projectId conf) loc
         par  = U.fbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
