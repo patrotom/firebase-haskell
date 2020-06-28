@@ -34,9 +34,15 @@ fbPush :: (MonadHttp m, FromJSON r) => Url s         ->
 fbPush url aPar EmptyBody = req POST url NoReqBody jsonResponse aPar
 fbPush url aPar (Body b)  = req POST url (ReqBodyJson b) jsonResponse aPar
 
--- update = undefined
+fbUpdate :: (MonadHttp m, FromJSON r) => Url s         ->
+                                         Option s      ->
+                                         FbBody        ->
+                                         m (JsonResponse r)
+fbUpdate url aPar EmptyBody = req PATCH url NoReqBody jsonResponse aPar
+fbUpdate url aPar (Body b)  = req PATCH url (ReqBodyJson b) jsonResponse aPar
 
--- delete = undefined
+fbDelete :: (MonadHttp m, FromJSON r) => Url s -> m (JsonResponse r)
+fbDelete url = req DELETE url NoReqBody jsonResponse mempty
 
 fbReq :: FbRequest   ->
          FbConfig    ->
@@ -52,13 +58,15 @@ fbReqP :: (MonadHttp m, FromJSON r) => FbRequest   ->
                                        FbConfig    ->
                                        FbLocation  ->
                                        FbQuery     ->
-                                       FbBody           ->
+                                       FbBody      ->
                                        m (JsonResponse r)
 fbReqP req conf loc qr body =
   case req of
-    Read  -> fbRead url par
-    Write -> fbWrite url aPar body
-    Push  -> fbPush url aPar body
+    Read   -> fbRead url par
+    Write  -> fbWrite url aPar body
+    Push   -> fbPush url aPar body
+    Update -> fbUpdate url aPar body
+    Delete -> fbDelete url
   where url  = U.fbUrl (projectId conf) loc
         par  = U.fbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
@@ -86,3 +94,9 @@ fbTest1 = fbReq Write FbConfig { projectId = "persistent-firebase", authToken = 
 
 fbTest2 :: IO Value
 fbTest2 = fbReq Push FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyQuery (Body myDino)
+
+fbTest3 :: IO Value
+fbTest3 = fbReq Update FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs/-MAvn3oHg6NTIwaB6R1c" EmptyQuery (Body DinoInfo { height = 10, lengt = 6, weight = 100.5 })
+
+fbTest4 :: IO Value
+fbTest4 = fbReq Delete FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs/-MAvn3oHg6NTIwaB6R1c/weight" EmptyQuery EmptyBody
