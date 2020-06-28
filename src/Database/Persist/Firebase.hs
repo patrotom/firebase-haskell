@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric     #-}
 
 module Database.Persist.Firebase where
 
@@ -19,11 +20,12 @@ fbRead :: (MonadHttp m, FromJSON r) => Url s    ->
                                        m (JsonResponse r)
 fbRead url = req GET url NoReqBody jsonResponse
 
-fbWrite :: (MonadHttp m, FromJSON r, ToJSON b) => Url s         ->
-                                                  Option s      ->
-                                                  ReqBodyJson b ->
-                                                  m (JsonResponse r)
-fbWrite url aPar body = req PUT url body jsonResponse aPar
+fbWrite :: (MonadHttp m, FromJSON r) => Url s         ->
+                                        Option s      ->
+                                        FbBody        ->
+                                        m (JsonResponse r)
+fbWrite url aPar EmptyBody = req PUT url NoReqBody jsonResponse aPar
+fbWrite url aPar (Body b)  = req PUT url (ReqBodyJson b) jsonResponse aPar
 
 -- push = undefined
 
@@ -31,33 +33,47 @@ fbWrite url aPar body = req PUT url body jsonResponse aPar
 
 -- delete = undefined
 
-fbReq :: ToJSON b => FbRequest   ->
-                     FbConfig    ->
-                     FbLocation  ->
-                     FbQuery     ->
-                     b           ->
-                     IO Value
+fbReq :: FbRequest   ->
+         FbConfig    ->
+         FbLocation  ->
+         FbQuery     ->
+         FbBody      ->
+         IO Value
 fbReq req conf loc qr body = runReq defaultHttpConfig $ do
   r <- fbReqP req conf loc qr body
   return (responseBody r :: Value)
 
-fbReqP :: (MonadHttp m, ToJSON b, FromJSON r) => FbRequest   ->
-                                                 FbConfig    ->
-                                                 FbLocation  ->
-                                                 FbQuery     ->
-                                                 b           ->
-                                                 m (JsonResponse r)
+fbReqP :: (MonadHttp m, FromJSON r) => FbRequest   ->
+                                       FbConfig    ->
+                                       FbLocation  ->
+                                       FbQuery     ->
+                                       FbBody           ->
+                                       m (JsonResponse r)
 fbReqP req conf loc qr body =
   case req of
     Read  -> fbRead url par
-    Write -> fbWrite url aPar (ReqBodyJson body)
+    Write -> fbWrite url aPar body
   where url  = U.fbUrl (projectId conf) loc
         par  = U.fbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
 
 -- =============================================================================
 
--- cQuery = ComplexQuery { qOrderBy = Just Key, qStartAt = Just (FbParam ("\"a\"" :: String)), qEndAt = Nothing, qEqualTo = Nothing, qLimit = Nothing }
+cQuery = ComplexQuery { qOrderBy = Just Key, qStartAt = Just (FbParam ("\"a\"" :: String)), qEndAt = Nothing, qEqualTo = Nothing, qLimit = Nothing }
 
--- fbTest :: IO Value
--- fbTest = fbReq Read FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" Shallow NoReqBody
+fbTest :: IO Value
+fbTest = fbReq Read FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" Shallow EmptyBody
+
+data DinoInfo = DinoInfo { height :: Float, lengt :: Float, weight :: Float } deriving (Show, Generic)
+newtype Dino = Dino { trex :: DinoInfo } deriving (Show, Generic)
+
+instance ToJSON DinoInfo
+instance FromJSON DinoInfo
+
+instance ToJSON Dino
+instance FromJSON Dino
+
+myDino = Dino { trex = DinoInfo { height = 5, lengt = 6, weight = 100.5 } }
+
+fbTest1 :: IO Value
+fbTest1 = fbReq Write FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyQuery (Body myDino)

@@ -4,6 +4,7 @@ module Database.Persist.Firebase.Types where
 
 import qualified Data.Text as T
 import Web.HttpApiData (ToHttpApiData)
+import Data.Aeson (ToJSON)
 
 
 type FbLocation = T.Text
@@ -25,7 +26,10 @@ data FbQuery = Shallow
                             , qEqualTo :: Maybe FbParam
                             , qLimit :: Maybe FbLimit
                             }
-              | Empty
+              | EmptyQuery
+
+data FbBody = forall b. ToJSON b => Body b
+            | EmptyBody
 
 data FbOrderBy = Child T.Text
                | Key

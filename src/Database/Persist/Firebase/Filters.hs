@@ -9,7 +9,7 @@ import Database.Persist.Firebase.Types
 
 
 filterParams :: (QueryParam p, Semigroup p, Monoid p) => FbQuery -> p
-filterParams Empty = mempty
+filterParams EmptyQuery = mempty
 filterParams Shallow = "shallow" =: True
 filterParams (ComplexQuery ob sa ea et lm) =
   filterOrderBy ob <>
