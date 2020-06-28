@@ -27,7 +27,12 @@ fbWrite :: (MonadHttp m, FromJSON r) => Url s         ->
 fbWrite url aPar EmptyBody = req PUT url NoReqBody jsonResponse aPar
 fbWrite url aPar (Body b)  = req PUT url (ReqBodyJson b) jsonResponse aPar
 
--- push = undefined
+fbPush :: (MonadHttp m, FromJSON r) => Url s         ->
+                                       Option s      ->
+                                       FbBody        ->
+                                       m (JsonResponse r)
+fbPush url aPar EmptyBody = req POST url NoReqBody jsonResponse aPar
+fbPush url aPar (Body b)  = req POST url (ReqBodyJson b) jsonResponse aPar
 
 -- update = undefined
 
@@ -53,6 +58,7 @@ fbReqP req conf loc qr body =
   case req of
     Read  -> fbRead url par
     Write -> fbWrite url aPar body
+    Push  -> fbPush url aPar body
   where url  = U.fbUrl (projectId conf) loc
         par  = U.fbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
@@ -77,3 +83,6 @@ myDino = Dino { trex = DinoInfo { height = 5, lengt = 6, weight = 100.5 } }
 
 fbTest1 :: IO Value
 fbTest1 = fbReq Write FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyQuery (Body myDino)
+
+fbTest2 :: IO Value
+fbTest2 = fbReq Push FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyQuery (Body myDino)
