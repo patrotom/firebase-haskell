@@ -9,6 +9,7 @@ import Database.Persist.Firebase.Types
 
 
 filterParams :: (QueryParam p, Semigroup p, Monoid p) => FbQuery -> p
+filterParams Empty = mempty
 filterParams Shallow = "shallow" =: True
 filterParams (ComplexQuery ob sa ea et lm) =
   filterOrderBy ob <>
@@ -19,7 +20,7 @@ filterParams (ComplexQuery ob sa ea et lm) =
 
 filterOrderBy :: (QueryParam p, Monoid p) => Maybe FbOrderBy -> p
 filterOrderBy Nothing = mempty
-filterOrderBy (Just ob) = "orderBy" =: t
+filterOrderBy (Just ob) = "orderBy" =: show t
   where t = case ob of
               Child x -> x
               Key     -> T.pack "$key"

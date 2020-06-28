@@ -1,16 +1,20 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Database.Persist.Firebase.Utils where
 
 import qualified Data.Text as T
-import Network.HTTP.Req (https, (=:), Url, QueryParam)
+import Network.HTTP.Req
 import Web.HttpApiData (ToHttpApiData)
 import Database.Persist.Firebase.Types
 import Database.Persist.Firebase.Filters (filterParams)
 
 
 baseUrl :: T.Text
-baseUrl = "firebaseio.com"
+baseUrl = ".firebaseio.com"
+
+fbUrl :: T.Text -> T.Text -> Url 'Https
+fbUrl pId loc = https (pId `T.append` baseUrl) /: (loc `T.append` ".json")
 
 fbParams :: (QueryParam p, Semigroup p, Monoid p) => Maybe FbAuthToken -> FbQuery -> p
 fbParams tok qr = authParam tok <> filterParams qr

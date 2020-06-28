@@ -25,6 +25,7 @@ data FbQuery = Shallow
                             , qEqualTo :: Maybe FbParam
                             , qLimit :: Maybe FbLimit
                             }
+              | Empty
 
 data FbOrderBy = Child T.Text
                | Key
