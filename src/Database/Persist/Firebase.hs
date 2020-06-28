@@ -25,13 +25,23 @@ fbRead url = req GET url NoReqBody jsonResponse
 
 -- delete = undefined
 
-fbReq :: (MonadHttp m, HttpBody b, FromJSON r) => FbRequest   ->
-                                                  FbConfig    ->
-                                                  FbLocation  ->
-                                                  FbQuery     ->
-                                                  b           ->
-                                                  m (JsonResponse r)
-fbReq req conf loc qr body =
+fbReq :: HttpBody b => FbRequest   ->
+                       FbConfig    ->
+                       FbLocation  ->
+                       FbQuery     ->
+                       b           ->
+                       IO Value
+fbReq req conf loc qr body = runReq defaultHttpConfig $ do
+  r <- fbReqP req conf loc qr body
+  return (responseBody r :: Value)
+
+fbReqP :: (MonadHttp m, HttpBody b, FromJSON r) => FbRequest   ->
+                                                   FbConfig    ->
+                                                   FbLocation  ->
+                                                   FbQuery     ->
+                                                   b           ->
+                                                   m (JsonResponse r)
+fbReqP req conf loc qr body =
   case req of
     Read -> fbRead url par
   where url = U.fbUrl (projectId conf) loc
@@ -41,10 +51,5 @@ fbReq req conf loc qr body =
 
 cQuery = ComplexQuery { qOrderBy = Just Key, qStartAt = Just (FbParam ("\"a\"" :: String)), qEndAt = Nothing, qEqualTo = Nothing, qLimit = Nothing }
 
-fbTest :: (MonadHttp m, FromJSON r) => m (JsonResponse r)
+fbTest :: IO Value
 fbTest = fbReq Read FbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" Shallow NoReqBody
-
-fbRun :: IO ()
-fbRun = runReq defaultHttpConfig $ do
-  r <- fbTest
-  liftIO $ print (responseBody r :: Value)
