@@ -3,11 +3,11 @@
 
 module Firebase.Database.Utils where
 
-import qualified Data.Text as T
 import Network.HTTP.Req
 import Web.HttpApiData (ToHttpApiData)
 import Firebase.Database.Types
 import Firebase.Database.Filters (filterParams)
+import qualified Data.Text as T
 
 
 baseUrl :: T.Text

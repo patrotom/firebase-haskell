@@ -2,9 +2,9 @@
 
 module Firebase.Database.Types where
 
-import qualified Data.Text as T
 import Web.HttpApiData (ToHttpApiData)
 import Data.Aeson (ToJSON)
+import qualified Data.Text as T
 
 
 type FbLocation = T.Text
