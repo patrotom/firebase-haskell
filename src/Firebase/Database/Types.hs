@@ -7,34 +7,34 @@ import Data.Aeson (ToJSON)
 import qualified Data.Text as T
 
 
-type FbLocation = T.Text
+type DbLocation = T.Text
 
-data FbRequest = Read | Write | Push | Update | Delete
+data DbMethod = Read | Write | Push | Update | Delete
                deriving (Eq)
 
 data FbAuthToken = OAuth2 T.Text | IdToken T.Text
 
-data FbConfig = FbConfig
+data DbConfig = DbConfig
               { projectId :: T.Text
               , authToken :: Maybe FbAuthToken 
               }
 
-data FbQuery = Shallow
-             | ComplexQuery { qOrderBy :: Maybe FbOrderBy
-                            , qStartAt :: Maybe FbParam
-                            , qEndAt :: Maybe FbParam
-                            , qEqualTo :: Maybe FbParam
-                            , qLimit :: Maybe FbLimit
+data Filter = Shallow
+            | ComplexFilter { fOrderby :: Maybe OrderBy
+                            , fStartAt :: Maybe Param
+                            , fEndAt :: Maybe Param
+                            , fEqualTo :: Maybe Param
+                            , fLimit :: Maybe FbLimit
                             }
-              | EmptyQuery
+            | EmptyFilter
 
-data FbBody = forall b. ToJSON b => Body b
-            | EmptyBody
+data RequestBody = forall b. ToJSON b => Body b
+                 | EmptyBody
 
-data FbOrderBy = Child T.Text
-               | Key
-               | Val
+data OrderBy = Child T.Text
+             | Key
+             | Val
 
-data FbParam = forall q. ToHttpApiData q => FbParam q
+data Param = forall q. ToHttpApiData q => Param q
 
 data FbLimit = ToFirst Int | ToLast Int

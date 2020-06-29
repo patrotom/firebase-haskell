@@ -8,17 +8,17 @@ import Firebase.Database.Types
 import qualified Data.Text as T
 
 
-filterParams :: (QueryParam p, Semigroup p, Monoid p) => FbQuery -> p
-filterParams EmptyQuery = mempty
+filterParams :: (QueryParam p, Semigroup p, Monoid p) => Filter -> p
+filterParams EmptyFilter = mempty
 filterParams Shallow = "shallow" =: True
-filterParams (ComplexQuery ob sa ea et lm) =
+filterParams (ComplexFilter ob sa ea et lm) =
   filterOrderBy ob <>
   filterStartAt sa <>
   filterEndAt ea   <>
   filterEqualTo et <>
   filterLimit lm
 
-filterOrderBy :: (QueryParam p, Monoid p) => Maybe FbOrderBy -> p
+filterOrderBy :: (QueryParam p, Monoid p) => Maybe OrderBy -> p
 filterOrderBy Nothing = mempty
 filterOrderBy (Just ob) = "orderBy" =: show t
   where t = case ob of
@@ -26,17 +26,17 @@ filterOrderBy (Just ob) = "orderBy" =: show t
               Key     -> T.pack "$key"
               Val     -> T.pack "$value"
 
-filterStartAt :: (QueryParam p, Monoid p) => Maybe FbParam -> p
+filterStartAt :: (QueryParam p, Monoid p) => Maybe Param -> p
 filterStartAt Nothing = mempty
-filterStartAt (Just (FbParam sa)) = "startAt" =: sa
+filterStartAt (Just (Param sa)) = "startAt" =: sa
 
-filterEndAt :: (QueryParam p, Monoid p) => Maybe FbParam -> p
+filterEndAt :: (QueryParam p, Monoid p) => Maybe Param -> p
 filterEndAt Nothing = mempty
-filterEndAt (Just (FbParam ea)) = "endAt" =: ea
+filterEndAt (Just (Param ea)) = "endAt" =: ea
 
-filterEqualTo :: (QueryParam p, Monoid p) => Maybe FbParam -> p
+filterEqualTo :: (QueryParam p, Monoid p) => Maybe Param -> p
 filterEqualTo Nothing = mempty
-filterEqualTo (Just (FbParam et)) = "equalTo" =: et
+filterEqualTo (Just (Param et)) = "equalTo" =: et
 
 filterLimit :: (QueryParam p, Monoid p) => Maybe FbLimit -> p
 filterLimit Nothing = mempty

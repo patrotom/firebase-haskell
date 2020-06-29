@@ -13,11 +13,11 @@ import qualified Data.Text as T
 baseUrl :: T.Text
 baseUrl = ".firebaseio.com"
 
-fbUrl :: T.Text -> T.Text -> Url 'Https
-fbUrl pId loc = https (pId `T.append` baseUrl) /: (loc `T.append` ".json")
+dbUrl :: T.Text -> T.Text -> Url 'Https
+dbUrl pId loc = https (pId `T.append` baseUrl) /: (loc `T.append` ".json")
 
-fbParams :: (QueryParam p, Semigroup p, Monoid p) => Maybe FbAuthToken -> FbQuery -> p
-fbParams tok qr = authParam tok <> filterParams qr
+dbParams :: (QueryParam p, Semigroup p, Monoid p) => Maybe FbAuthToken -> Filter -> p
+dbParams tok qr = authParam tok <> filterParams qr
 
 authParam :: (QueryParam p, Monoid p) => Maybe FbAuthToken -> p
 authParam Nothing = mempty
