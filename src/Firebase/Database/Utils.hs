@@ -1,13 +1,13 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Database.Persist.Firebase.Utils where
+module Firebase.Database.Utils where
 
 import qualified Data.Text as T
 import Network.HTTP.Req
 import Web.HttpApiData (ToHttpApiData)
-import Database.Persist.Firebase.Types
-import Database.Persist.Firebase.Filters (filterParams)
+import Firebase.Database.Types
+import Firebase.Database.Filters (filterParams)
 
 
 baseUrl :: T.Text

@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Database.Persist.Firebase.Filters where
+module Firebase.Database.Filters where
 
 import qualified Data.Text as T
 import Network.HTTP.Req (https, (=:), Url, QueryParam)
 import Web.HttpApiData (ToHttpApiData)
-import Database.Persist.Firebase.Types
+import Firebase.Database.Types
 
 
 filterParams :: (QueryParam p, Semigroup p, Monoid p) => FbQuery -> p

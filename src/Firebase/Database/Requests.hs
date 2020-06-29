@@ -1,8 +1,8 @@
-module Database.Persist.Firebase.Requests where
+module Firebase.Database.Requests where
 
 import Network.HTTP.Req
 import Data.Aeson (FromJSON, ToJSON)
-import Database.Persist.Firebase.Types
+import Firebase.Database.Types
 
 
 fbRead :: (MonadHttp m, FromJSON r) => Url s    ->

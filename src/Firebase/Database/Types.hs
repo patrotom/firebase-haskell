@@ -1,6 +1,6 @@
 {-# LANGUAGE ExistentialQuantification #-}
 
-module Database.Persist.Firebase.Types where
+module Firebase.Database.Types where
 
 import qualified Data.Text as T
 import Web.HttpApiData (ToHttpApiData)

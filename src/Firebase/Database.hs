@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric     #-}
 
-module Database.Persist.Firebase where
+module Firebase.Database where
 
 import Network.HTTP.Req
 import Control.Monad
@@ -9,11 +9,11 @@ import GHC.Generics
 import Control.Monad.IO.Class
 import Data.Aeson (FromJSON, ToJSON, encode, Value)
 import qualified Data.ByteString.Char8 as B
-import Database.Persist.Firebase.Types
-import qualified Database.Persist.Firebase.Utils as U
+import Firebase.Database.Types
+import qualified Firebase.Database.Utils as U
 import qualified Data.Map as M
 import qualified Data.Text as T
-import qualified Database.Persist.Firebase.Requests as FR
+import qualified Firebase.Database.Requests as FR
 
 
 fbReq :: FbRequest   ->
