@@ -22,12 +22,9 @@ description:         Please see the README on GitHub at <https://github.com/patr
 dependencies:
 - base >= 4.7 && < 5
 - req
-- bytestring
 - text
 - aeson
 - http-api-data
-- containers
-- http-types
 
 library:
   source-dirs: src

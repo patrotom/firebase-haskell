@@ -3,9 +3,7 @@ module Firebase.Database where
 import Network.HTTP.Req
 import Data.Aeson (FromJSON, ToJSON, encode, Value)
 import Firebase.Database.Types
-import qualified Data.Map as M
 import qualified Data.Text as T
-import qualified Data.ByteString.Char8 as B
 import qualified Firebase.Database.Utils as U
 import qualified Firebase.Database.Requests as FR
 
