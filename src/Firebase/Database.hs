@@ -37,6 +37,3 @@ dbQueryP req conf loc qr body =
   where url  = U.dbUrl (projectId conf) loc
         par  = U.dbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
-
-fbTestR :: IO Value
-fbTestR = dbQuery Read DbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyFilter EmptyBody
