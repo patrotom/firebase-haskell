@@ -17,7 +17,7 @@ baseUrl = ".firebaseio.com"
 
 dbUrl :: T.Text -> DbLocation -> DbURL
 dbUrl pId loc = (E.encodeUtf8 (pId `T.append` baseUrl),
-                 E.encodeUtf8 (loc `T.append` ".json"))
+                 E.encodeUtf8 ("/" `T.append` loc `T.append` ".json"))
 
 dbParams :: Maybe FbAuthToken -> Filter -> S.Query
 dbParams tok qr = authParam tok ++ filterParams qr

@@ -1,36 +1,42 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Firebase.Database where
 
-import Network.HTTP.Req
-import Data.Aeson (FromJSON, ToJSON, encode, Value)
+import Data.Aeson (Value)
 import Firebase.Database.Types
 import qualified Data.Text as T
+import qualified Network.HTTP.Simple as S
 import qualified Firebase.Database.Utils as U
 import qualified Firebase.Database.Requests as FR
 
 
--- dbQuery :: DbMethod    ->
---            DbConfig    ->
---            DbLocation  ->
---            Filter      ->
---            RequestBody ->
---            IO Value
--- dbQuery req conf loc qr body = runReq defaultHttpConfig $ do
---   r <- dbQueryP req conf loc qr body
---   return (responseBody r :: Value)
+dbQuery :: DbMethod    ->
+           DbConfig    ->
+           DbLocation  ->
+           Filter      ->
+           RequestBody ->
+           IO Value
+dbQuery req conf loc qr body = do
+  let request = dbQueryP req conf loc qr body
+  response <- S.httpJSON request
+  return (S.getResponseBody response :: Value)
 
--- dbQueryP :: (MonadHttp m, FromJSON r) => DbMethod    ->
---                                          DbConfig    ->
---                                          DbLocation  ->
---                                          Filter      ->
---                                          RequestBody ->
---                                          m (JsonResponse r)
--- dbQueryP req conf loc qr body =
---   case req of
---     Read   -> FR.fbRead url par
---     Write  -> FR.fbWrite url aPar body
---     Push   -> FR.fbPush url aPar body
---     Update -> FR.fbUpdate url aPar body
---     Delete -> FR.fbDelete url
---   where url  = U.dbUrl (projectId conf) loc
---         par  = U.dbParams (authToken conf) qr
---         aPar = U.authParam (authToken conf)
+dbQueryP :: DbMethod    ->
+            DbConfig    ->
+            DbLocation  ->
+            Filter      ->
+            RequestBody ->
+            S.Request
+dbQueryP req conf loc qr body =
+  case req of
+    Read   -> FR.fbRead url par
+    Write  -> FR.fbWrite url aPar body
+    Push   -> FR.fbPush url aPar body
+    Update -> FR.fbUpdate url aPar body
+    Delete -> FR.fbDelete url
+  where url  = U.dbUrl (projectId conf) loc
+        par  = U.dbParams (authToken conf) qr
+        aPar = U.authParam (authToken conf)
+
+fbTestR :: IO Value
+fbTestR = dbQuery Read DbConfig { projectId = "persistent-firebase", authToken = Nothing } "dinosaurs" EmptyFilter EmptyBody

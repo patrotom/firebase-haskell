@@ -41,4 +41,5 @@ commonRequest :: DbURL -> S.Query -> S.Request
 commonRequest url qry = S.setRequestPath (snd url)
                       $ S.setRequestHost (fst url)
                       $ S.setRequestQueryString qry
+                      $ S.setRequestPort 443
                       $ S.setRequestSecure True S.defaultRequest
