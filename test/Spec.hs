@@ -1,6 +1,6 @@
 import Test.Hspec
 
-import qualified Firebase.DatabaseSpec
+import qualified Firebase.Database.FiltersSpec
 
 
 main :: IO ()
@@ -8,4 +8,4 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "Firebase.DatabaseSpec" Firebase.DatabaseSpec.spec
+  describe "Firebase.Database.FiltersSpec" Firebase.Database.FiltersSpec.spec

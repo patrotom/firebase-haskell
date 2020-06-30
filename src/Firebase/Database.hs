@@ -37,3 +37,11 @@ dbQueryP req conf loc qr body =
   where url  = U.dbUrl (projectId conf) loc
         par  = U.dbParams (authToken conf) qr
         aPar = U.authParam (authToken conf)
+
+complexFilter :: Filter
+complexFilter = ComplexFilter { fOrderBy = Nothing
+                              , fStartAt = Nothing
+                              , fEndAt   = Nothing
+                              , fEqualTo = Nothing
+                              , fLimit   = Nothing
+                              }
