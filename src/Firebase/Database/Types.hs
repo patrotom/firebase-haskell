@@ -20,7 +20,7 @@ data DbConfig = DbConfig
               }
 
 data Filter = Shallow
-            | ComplexFilter { fOrderby :: Maybe OrderBy
+            | ComplexFilter { fOrderBy :: Maybe OrderBy
                             , fStartAt :: Maybe Param
                             , fEndAt :: Maybe Param
                             , fEqualTo :: Maybe Param

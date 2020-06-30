@@ -2,8 +2,7 @@
 
 module Firebase.Database.Filters where
 
-import Network.HTTP.Req (https, (=:), Url, QueryParam)
-import Web.HttpApiData (ToHttpApiData)
+import Network.HTTP.Req ((=:), QueryParam)
 import Firebase.Database.Types
 import qualified Data.Text as T
 
