@@ -25,6 +25,8 @@ dependencies:
 - text
 - aeson
 - http-api-data
+- http-conduit
+- bytestring
 
 library:
   source-dirs: src

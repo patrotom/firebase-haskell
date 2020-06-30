@@ -2,42 +2,47 @@
 
 module Firebase.Database.Filters where
 
-import Network.HTTP.Req ((=:), QueryParam)
+import Web.HttpApiData (ToHttpApiData, toQueryParam)
 import Firebase.Database.Types
-import qualified Data.Text as T
+import qualified Data.Text.Encoding as E
+import qualified Network.HTTP.Simple as S
+import qualified Data.ByteString.Char8 as C8
 
 
-filterParams :: (QueryParam p, Semigroup p, Monoid p) => Filter -> p
-filterParams EmptyFilter = mempty
-filterParams Shallow = "shallow" =: True
+filterParams :: Filter -> S.Query
+filterParams EmptyFilter = []
+filterParams Shallow = encodeQueryParam "shallow" True
 filterParams (ComplexFilter ob sa ea et lm) =
-  filterOrderBy ob <>
-  filterStartAt sa <>
-  filterEndAt ea   <>
-  filterEqualTo et <>
+  filterOrderBy ob ++
+  filterStartAt sa ++
+  filterEndAt ea   ++
+  filterEqualTo et ++
   filterLimit lm
 
-filterOrderBy :: (QueryParam p, Monoid p) => Maybe OrderBy -> p
-filterOrderBy Nothing = mempty
-filterOrderBy (Just ob) = "orderBy" =: show t
+filterOrderBy :: Maybe OrderBy -> S.Query
+filterOrderBy Nothing = []
+filterOrderBy (Just ob) = encodeQueryParam "orderBy" t
   where t = case ob of
               Child x -> x
-              Key     -> T.pack "$key"
-              Val     -> T.pack "$value"
+              Key     -> "$key"
+              Val     -> "$value"
 
-filterStartAt :: (QueryParam p, Monoid p) => Maybe Param -> p
-filterStartAt Nothing = mempty
-filterStartAt (Just (Param sa)) = "startAt" =: sa
+filterStartAt :: Maybe Param -> S.Query
+filterStartAt Nothing = []
+filterStartAt (Just (Param sa)) = encodeQueryParam "startAt" sa
 
-filterEndAt :: (QueryParam p, Monoid p) => Maybe Param -> p
-filterEndAt Nothing = mempty
-filterEndAt (Just (Param ea)) = "endAt" =: ea
+filterEndAt :: Maybe Param -> S.Query
+filterEndAt Nothing = []
+filterEndAt (Just (Param ea)) = encodeQueryParam "endAt" ea
 
-filterEqualTo :: (QueryParam p, Monoid p) => Maybe Param -> p
-filterEqualTo Nothing = mempty
-filterEqualTo (Just (Param et)) = "equalTo" =: et
+filterEqualTo :: Maybe Param -> S.Query
+filterEqualTo Nothing = []
+filterEqualTo (Just (Param et)) = encodeQueryParam "equalTo" et
 
-filterLimit :: (QueryParam p, Monoid p) => Maybe FbLimit -> p
-filterLimit Nothing = mempty
-filterLimit (Just (ToFirst x)) = "limitToFirst" =: x
-filterLimit (Just (ToLast x)) = "limitToLast" =: x
+filterLimit :: Maybe FbLimit -> S.Query
+filterLimit Nothing = []
+filterLimit (Just (ToFirst x)) = encodeQueryParam "limitToFirst" x
+filterLimit (Just (ToLast x)) = encodeQueryParam "limitToLast" x
+
+encodeQueryParam :: ToHttpApiData a => String -> a -> S.Query
+encodeQueryParam k v = [(C8.pack k, Just $ E.encodeUtf8 . toQueryParam $ v)]
