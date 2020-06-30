@@ -5,9 +5,12 @@ module Firebase.Database.Types where
 import Web.HttpApiData (ToHttpApiData)
 import Data.Aeson (ToJSON)
 import qualified Data.Text as T
+import qualified Data.ByteString.Char8 as C8
 
 
 type DbLocation = T.Text
+
+type DbURL = (C8.ByteString, C8.ByteString)
 
 data DbMethod = Read | Write | Push | Update | Delete
                deriving (Eq)

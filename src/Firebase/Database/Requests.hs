@@ -1,35 +1,45 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Firebase.Database.Requests where
 
-import Network.HTTP.Req
-import Data.Aeson (FromJSON, ToJSON)
 import Firebase.Database.Types
+import qualified Network.HTTP.Simple as S
+import qualified Data.Text as T
+import qualified Data.ByteString.Char8 as C8
 
 
-fbRead :: (MonadHttp m, FromJSON r) => Url s    ->
-                                       Option s ->
-                                       m (JsonResponse r)
-fbRead url = req GET url NoReqBody jsonResponse
+fbRead :: DbURL -> S.Query -> S.Request
+fbRead url qry = S.setRequestMethod "GET"
+               $ commonRequest url qry
 
-fbWrite :: (MonadHttp m, FromJSON r) => Url s       ->
-                                        Option s    ->
-                                        RequestBody ->
-                                        m (JsonResponse r)
-fbWrite url aPar EmptyBody = req PUT url NoReqBody jsonResponse aPar
-fbWrite url aPar (Body b)  = req PUT url (ReqBodyJson b) jsonResponse aPar
+fbWrite :: DbURL -> S.Query -> RequestBody -> S.Request
+fbWrite url qry EmptyBody = S.setRequestMethod "PUT"
+                          $ commonRequest url qry
+fbWrite url qry (Body b)  = S.setRequestMethod "PUT"
+                          $ S.setRequestBodyJSON b
+                          $ commonRequest url qry
 
-fbPush :: (MonadHttp m, FromJSON r) => Url s       ->
-                                       Option s    ->
-                                       RequestBody ->
-                                       m (JsonResponse r)
-fbPush url aPar EmptyBody = req POST url NoReqBody jsonResponse aPar
-fbPush url aPar (Body b)  = req POST url (ReqBodyJson b) jsonResponse aPar
+fbPush :: DbURL -> S.Query -> RequestBody -> S.Request
+fbPush url qry EmptyBody = S.setRequestMethod "POST"
+                         $ commonRequest url qry
+fbPush url qry (Body b)  = S.setRequestMethod "POST"
+                         $ S.setRequestBodyJSON b
+                         $ commonRequest url qry
 
-fbUpdate :: (MonadHttp m, FromJSON r) => Url s       ->
-                                         Option s    ->
-                                         RequestBody ->
-                                         m (JsonResponse r)
-fbUpdate url aPar EmptyBody = req PATCH url NoReqBody jsonResponse aPar
-fbUpdate url aPar (Body b)  = req PATCH url (ReqBodyJson b) jsonResponse aPar
+fbUpdate :: DbURL -> S.Query -> RequestBody -> S.Request
+fbUpdate url qry EmptyBody = S.setRequestMethod "PATCH"
+                           $ commonRequest url qry
+fbUpdate url qry (Body b)  = S.setRequestMethod "PATCH"
+                           $ S.setRequestBodyJSON b
+                           $ commonRequest url qry
 
-fbDelete :: (MonadHttp m, FromJSON r) => Url s -> m (JsonResponse r)
-fbDelete url = req DELETE url NoReqBody jsonResponse mempty
+fbDelete :: DbURL -> S.Request
+fbDelete url = S.setRequestMethod "DELETE"
+             $ commonRequest url []
+
+commonRequest :: DbURL -> S.Query -> S.Request
+commonRequest url qry = S.setRequestPath (snd url)
+                      $ S.setRequestHost (fst url)
+                      $ S.setRequestQueryString qry
+                      $ S.setRequestPort 443
+                      $ S.setRequestSecure True S.defaultRequest
