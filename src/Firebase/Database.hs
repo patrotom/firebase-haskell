@@ -30,13 +30,12 @@ dbQueryP :: DbMethod    ->
 dbQueryP req conf loc qr body =
   case req of
     Read   -> FR.fbRead url par
-    Write  -> FR.fbWrite url aPar body
-    Push   -> FR.fbPush url aPar body
-    Update -> FR.fbUpdate url aPar body
+    Write  -> FR.fbWrite url par body
+    Push   -> FR.fbPush url par body
+    Update -> FR.fbUpdate url par body
     Delete -> FR.fbDelete url
   where url  = U.dbUrl (projectId conf) loc
         par  = U.dbParams (authToken conf) qr
-        aPar = U.authParam (authToken conf)
 
 complexFilter :: Filter
 complexFilter = ComplexFilter { fOrderBy = Nothing

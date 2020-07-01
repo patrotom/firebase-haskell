@@ -6,7 +6,6 @@ import Test.Hspec
 import Firebase.Database (complexFilter)
 import Firebase.Database.Types
 import Firebase.Database.Filters
-import qualified Data.ByteString.Char8 as C8
 
 
 spec :: Spec

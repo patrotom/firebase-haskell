@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Firebase.Database.Utils where
+module Firebase.Database.Utils
+  ( dbUrl
+  , dbParams
+  ) where
 
 import Web.HttpApiData (ToHttpApiData)
 import Firebase.Database.Types
