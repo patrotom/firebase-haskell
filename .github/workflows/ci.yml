@@ -10,4 +10,4 @@ jobs:
         with:
           ghc-version: '8.8.3'
           stack-version: 'latest'
-      - run: stack test
+      - run: stack test --system-ghc
