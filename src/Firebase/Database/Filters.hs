@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Firebase.Database.Filters where
+module Firebase.Database.Filters
+  ( filterParams
+  , encodeQueryParam
+  ) where
 
 import Web.HttpApiData (ToHttpApiData, toQueryParam)
 import Firebase.Database.Types

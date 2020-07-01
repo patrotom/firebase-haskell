@@ -37,6 +37,16 @@ spec = do
                                               , ("equalTo", Just "38.5")
                                               , ("limitToFirst", Just "100")
                                               ]
+  describe "encodeQueryParam" $ do
+    it "encodes string parameter" $
+      encodeQueryParam "p1" (show "val") `shouldBe` [("p1", Just "\"val\"")]
+    it "encodes int parameter" $
+      encodeQueryParam "p2" (5 :: Int) `shouldBe` [("p2", Just "5")]
+    it "encodes float parameter" $
+      encodeQueryParam "p3" (2.5 :: Float) `shouldBe` [("p3", Just "2.5")]
+    it "encodes bool parameter" $
+      encodeQueryParam "p4" True `shouldBe` [("p4", Just "true")]
+
 
 complexFilter1 :: Filter
 complexFilter1 = complexFilter { fOrderBy = Just (Child "height") }
