@@ -4,8 +4,6 @@ module Firebase.Database.Requests where
 
 import Firebase.Database.Types
 import qualified Network.HTTP.Simple as S
-import qualified Data.Text as T
-import qualified Data.ByteString.Char8 as C8
 
 
 fbRead :: DbURL -> S.Query -> S.Request

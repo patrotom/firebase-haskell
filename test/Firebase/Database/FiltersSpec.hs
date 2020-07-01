@@ -16,9 +16,9 @@ spec = do
     it "works with shallow filter" $
       filterParams Shallow `shouldBe` [("shallow", Just "true")]
     it "works with complex filters" $ do
-      filterParams complexFilter1 `shouldBe` [("orderBy", Just "height")]
-      filterParams complexFilter2 `shouldBe` [("orderBy", Just "$key")]
-      filterParams complexFilter3 `shouldBe` [("orderBy", Just "$value")]
+      filterParams complexFilter1 `shouldBe` [("orderBy", Just "\"height\"")]
+      filterParams complexFilter2 `shouldBe` [("orderBy", Just "\"$key\"")]
+      filterParams complexFilter3 `shouldBe` [("orderBy", Just "\"$value\"")]
       filterParams complexFilter4 `shouldBe` [("startAt", Just "5")]
       filterParams complexFilter5 `shouldBe` [("startAt", Just "true")]
       filterParams complexFilter6 `shouldBe` [("startAt", Just "\"a\"")]
@@ -30,7 +30,7 @@ spec = do
       filterParams complexFilter12 `shouldBe` [("equalTo", Just "\"abc\"")]
       filterParams complexFilter13 `shouldBe` [("limitToFirst", Just "42")]
       filterParams complexFilter14 `shouldBe` [("limitToLast", Just "42")]
-      filterParams complexFilter15 `shouldBe` [ ("orderBy", Just "height")
+      filterParams complexFilter15 `shouldBe` [ ("orderBy", Just "\"height\"")
                                               , ("startAt", Just "5")
                                               , ("endAt", Just "42")
                                               , ("equalTo", Just "38.5")

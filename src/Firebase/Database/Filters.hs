@@ -24,7 +24,7 @@ filterParams (ComplexFilter ob sa ea et lm) =
 
 filterOrderBy :: Maybe OrderBy -> S.Query
 filterOrderBy Nothing = []
-filterOrderBy (Just ob) = encodeQueryParam "orderBy" t
+filterOrderBy (Just ob) = encodeQueryParam "orderBy" (show t)
   where t = case ob of
               Child x -> x
               Key     -> "$key"

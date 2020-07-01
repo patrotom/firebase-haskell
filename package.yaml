@@ -26,6 +26,7 @@ dependencies:
 - http-api-data
 - http-conduit
 - bytestring
+- http-client
 
 library:
   source-dirs: src
@@ -41,3 +42,6 @@ tests:
     dependencies:
     - persistent-firebase
     - hspec
+    - http-conduit
+    - http-client
+    - bytestring
