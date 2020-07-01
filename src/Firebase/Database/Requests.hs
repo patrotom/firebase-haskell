@@ -31,9 +31,9 @@ fbUpdate url qry (Body b)  = S.setRequestMethod "PATCH"
                            $ S.setRequestBodyJSON b
                            $ commonRequest url qry
 
-fbDelete :: DbURL -> S.Request
-fbDelete url = S.setRequestMethod "DELETE"
-             $ commonRequest url []
+fbDelete :: DbURL -> S.Query -> S.Request
+fbDelete url qry = S.setRequestMethod "DELETE"
+                 $ commonRequest url qry
 
 commonRequest :: DbURL -> S.Query -> S.Request
 commonRequest url qry = S.setRequestPath (snd url)

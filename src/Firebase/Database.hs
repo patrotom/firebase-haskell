@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Firebase.Database where
 
 import Data.Aeson (Value)
@@ -33,7 +31,7 @@ dbQueryP req conf loc qr body =
     Write  -> FR.fbWrite url par body
     Push   -> FR.fbPush url par body
     Update -> FR.fbUpdate url par body
-    Delete -> FR.fbDelete url
+    Delete -> FR.fbDelete url par
   where url  = U.dbUrl (projectId conf) loc
         par  = U.dbParams (authToken conf) qr
 

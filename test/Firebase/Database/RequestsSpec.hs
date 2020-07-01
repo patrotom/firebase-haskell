@@ -99,7 +99,7 @@ updateReq2 :: S.Request
 updateReq2 = fbUpdate dbUrl dbParams EmptyBody
 
 deleteReq :: S.Request
-deleteReq = fbDelete dbUrl
+deleteReq = fbDelete dbUrl dbParams
 
 extractBody :: C.RequestBody -> L.ByteString
 extractBody (C.RequestBodyLBS b) = b
