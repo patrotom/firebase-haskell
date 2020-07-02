@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-  Module      : Requests
+  Module      : Firebase.Database.Requests
   Description : Firebase Database REST requests.
   Copyright   : (c) Tomas Patro, 2020
   License     : MIT

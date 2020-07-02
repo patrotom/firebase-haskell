@@ -1,5 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+{-|
+  Module      : Firebase.Database.Utils
+  Description : Utility functions.
+  Copyright   : (c) Tomas Patro, 2020
+  License     : MIT
+  Maintainer  : tomas.patro@gmail.com
+  Stability   : experimental
+  Portability : POSIX
+
+  Helper utility functions used by the other modules. 
+-}
 module Firebase.Database.Utils
   ( dbUrl
   , dbParams
@@ -14,15 +25,19 @@ import qualified Data.Text as T
 import qualified Network.HTTP.Simple as S
 
 
-baseUrl :: T.Text
-baseUrl = ".firebaseio.com"
-
-dbUrl :: T.Text -> DbLocation -> DbURL
+-- | Generate database URL from Project ID and data location.
+dbUrl :: T.Text -- ^ Firebase Project ID
+      -> DbLocation -- ^ Path to data in database
+      -> DbURL -- ^ Final database URL
 dbUrl pId loc = (E.encodeUtf8 (pId `T.append` baseUrl),
                  E.encodeUtf8 ("/" `T.append` loc `T.append` ".json"))
 
+-- | Generate query parameters from authentication token and filters.
 dbParams :: Maybe FbAuthToken -> Filter -> S.Query
 dbParams tok qr = authParam tok ++ filterParams qr
+
+baseUrl :: T.Text
+baseUrl = ".firebaseio.com"
 
 authParam :: Maybe FbAuthToken -> S.Query
 authParam Nothing = []

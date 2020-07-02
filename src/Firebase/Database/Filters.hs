@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-  Module      : Filters
+  Module      : Firebase.Database.Filters
   Description : Generating filter query parameters.
   Copyright   : (c) Tomas Patro, 2020
   License     : MIT

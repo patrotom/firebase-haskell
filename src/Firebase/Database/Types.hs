@@ -1,7 +1,7 @@
 {-# LANGUAGE ExistentialQuantification #-}
 
 {-|
-  Module      : Types
+  Module      : Firebase.Database.Types
   Description : Common Firebase Database library data types.
   Copyright   : (c) Tomas Patro, 2020
   License     : MIT

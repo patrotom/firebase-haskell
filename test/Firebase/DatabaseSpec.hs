@@ -5,7 +5,6 @@ module Firebase.DatabaseSpec (spec) where
 import Test.Hspec
 import Data.Aeson (ToJSON, encode, toJSON, (.=), object)
 import Firebase.Database
-import Firebase.Database.Types
 import qualified Network.HTTP.Simple as S
 import qualified Network.HTTP.Client as C
 import qualified Data.ByteString.Lazy as L
