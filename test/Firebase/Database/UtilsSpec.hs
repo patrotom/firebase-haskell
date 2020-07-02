@@ -26,6 +26,7 @@ spec = do
       dbParams Nothing EmptyFilter `shouldBe` []
     it "generates filter query params along with auth token" $
       dbParams (Just oAuth2Tok) complexFilter1 `shouldBe` [ ("access_token", Just "123456")
+                                                          , ("orderBy", Just "\"$key\"")
                                                           , ("startAt", Just "5")
                                                           ]
 

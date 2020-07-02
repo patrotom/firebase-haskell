@@ -36,7 +36,7 @@ dbQueryP req conf loc fil body =
         par  = U.dbParams (authToken conf) fil
 
 complexFilter :: Filter
-complexFilter = ComplexFilter { fOrderBy = Nothing
+complexFilter = ComplexFilter { fOrderBy = Key
                               , fStartAt = Nothing
                               , fEndAt   = Nothing
                               , fEqualTo = Nothing

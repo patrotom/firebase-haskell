@@ -41,18 +41,14 @@ filterParams (ComplexFilter ob sa ea et lm) =
 
 
 {-|
-  Convert 'Maybe' 'OrderBy' to a 'S.Query'.
-  
-    * If the first argument is 'Nothing', it returns empty list @[]@.
-    * If the first argument is 'Just' 'OrderBy', it returns
+  Convert 'OrderBy' to a 'S.Query'. Based on the first argument it returns
 
-        * 'encodeQueryParam'@ "orderBy" (@'show' @x)@ for 'Child' @x@,
-        * 'encodeQueryParam'@ "orderBy" (@'show' @"$key")@ for 'Key',
-        * and 'encodeQueryParam'@ "orderBy" (@'show' @"$value")@ for 'Val'.
+    * 'encodeQueryParam'@ "orderBy" (@'show' @x)@ for 'Child' @x@,
+    * 'encodeQueryParam'@ "orderBy" (@'show' @"$key")@ for 'Key',
+    * and 'encodeQueryParam'@ "orderBy" (@'show' @"$value")@ for 'Val'.
 -}
-filterOrderBy :: Maybe OrderBy -> S.Query
-filterOrderBy Nothing = []
-filterOrderBy (Just ob) = encodeQueryParam "orderBy" (show t)
+filterOrderBy :: OrderBy -> S.Query
+filterOrderBy ob = encodeQueryParam "orderBy" (show t)
   where t = case ob of
               Child x -> x
               Key     -> "$key"

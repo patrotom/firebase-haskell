@@ -59,7 +59,7 @@ fbAuthToken :: FbAuthToken
 fbAuthToken = OAuth2 "123456"
 
 complexFilter1 :: Filter
-complexFilter1 = complexFilter { fOrderBy = Just (Child "height")
+complexFilter1 = complexFilter { fOrderBy = Child "height"
                                , fStartAt = Just (Param (5 :: Int))
                                , fEndAt   = Just (Param (42 :: Int))
                                , fEqualTo = Just (Param (38.5 :: Float))

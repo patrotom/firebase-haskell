@@ -19,17 +19,39 @@ spec = do
       filterParams complexFilter1 `shouldBe` [("orderBy", Just "\"height\"")]
       filterParams complexFilter2 `shouldBe` [("orderBy", Just "\"$key\"")]
       filterParams complexFilter3 `shouldBe` [("orderBy", Just "\"$value\"")]
-      filterParams complexFilter4 `shouldBe` [("startAt", Just "5")]
-      filterParams complexFilter5 `shouldBe` [("startAt", Just "true")]
-      filterParams complexFilter6 `shouldBe` [("startAt", Just "\"a\"")]
-      filterParams complexFilter7 `shouldBe` [("endAt", Just "42")]
-      filterParams complexFilter8 `shouldBe` [("endAt", Just "false")]
-      filterParams complexFilter9 `shouldBe` [("endAt", Just "\"bvd\"")]
-      filterParams complexFilter10 `shouldBe` [("equalTo", Just "50.5")]
-      filterParams complexFilter11 `shouldBe` [("equalTo", Just "true")]
-      filterParams complexFilter12 `shouldBe` [("equalTo", Just "\"abc\"")]
-      filterParams complexFilter13 `shouldBe` [("limitToFirst", Just "42")]
-      filterParams complexFilter14 `shouldBe` [("limitToLast", Just "42")]
+      filterParams complexFilter4 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("startAt", Just "5")
+                                             ]
+      filterParams complexFilter5 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("startAt", Just "true")
+                                             ]
+      filterParams complexFilter6 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("startAt", Just "\"a\"")
+                                             ]
+      filterParams complexFilter7 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("endAt", Just "42")
+                                             ]
+      filterParams complexFilter8 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("endAt", Just "false")
+                                             ]
+      filterParams complexFilter9 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                             , ("endAt", Just "\"bvd\"")
+                                             ]
+      filterParams complexFilter10 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                              , ("equalTo", Just "50.5")
+                                              ]
+      filterParams complexFilter11 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                              , ("equalTo", Just "true")
+                                              ]
+      filterParams complexFilter12 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                              , ("equalTo", Just "\"abc\"")
+                                              ]
+      filterParams complexFilter13 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                              , ("limitToFirst", Just "42")
+                                              ]
+      filterParams complexFilter14 `shouldBe` [ ("orderBy", Just "\"$key\"")
+                                              , ("limitToLast", Just "42")
+                                              ]
       filterParams complexFilter15 `shouldBe` [ ("orderBy", Just "\"height\"")
                                               , ("startAt", Just "5")
                                               , ("endAt", Just "42")
@@ -48,13 +70,13 @@ spec = do
 
 
 complexFilter1 :: Filter
-complexFilter1 = complexFilter { fOrderBy = Just (Child "height") }
+complexFilter1 = complexFilter { fOrderBy = Child "height" }
 
 complexFilter2 :: Filter
-complexFilter2 = complexFilter { fOrderBy = Just Key }
+complexFilter2 = complexFilter
 
 complexFilter3 :: Filter
-complexFilter3 = complexFilter { fOrderBy = Just Val }
+complexFilter3 = complexFilter { fOrderBy = Val }
 
 complexFilter4 :: Filter
 complexFilter4 = complexFilter { fStartAt = Just (Param (5 :: Int)) }
@@ -90,7 +112,7 @@ complexFilter14 :: Filter
 complexFilter14 = complexFilter { fLimit = Just (ToLast 42) }
 
 complexFilter15 :: Filter
-complexFilter15 = complexFilter { fOrderBy = Just (Child "height")
+complexFilter15 = complexFilter { fOrderBy = Child "height"
                                 , fStartAt = Just (Param (5 :: Int))
                                 , fEndAt   = Just (Param (42 :: Int))
                                 , fEqualTo = Just (Param (38.5 :: Float))
