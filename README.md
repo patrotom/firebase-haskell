@@ -1,4 +1,4 @@
-![HSpec](https://github.com/patrotom/firebase-haskell/workflows/CI/badge.svg)
+![HSpec](https://github.com/patrotom/firebase-haskell/workflows/HSpec/badge.svg)
 
 # Firebase Haskell
 
