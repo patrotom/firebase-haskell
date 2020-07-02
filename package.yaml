@@ -1,8 +1,8 @@
-name:                persistent-firebase
-version:             0.1.0.0
-github:              "patrotom/persistent-firebase"
+name:                firebase-haskell
+version:             0.0.1
+github:              "patrotom/firebase-haskell"
 license:             MIT
-author:              "Tomáš Patro"
+author:              "Tomas Patro"
 maintainer:          "tomas.patro@gmail.com"
 copyright:           "Copyright 2020 Tomas Patro"
 
@@ -14,19 +14,22 @@ extra-source-files:
 # synopsis:            Short description of your package
 # category:            Web
 
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/patrotom/persistent-firebase#readme>
+description:         Please see the README on GitHub at <https://github.com/patrotom/firebase-haskell#readme>
 
 dependencies:
 - base >= 4.7 && < 5
+- text
+- aeson
+- http-api-data
+- http-conduit
+- bytestring
+- http-client
 
 library:
   source-dirs: src
 
 tests:
-  persistent-firebase-test:
+  firebase-haskell-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -34,4 +37,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - persistent-firebase
+    - firebase-haskell
+    - hspec
+    - http-conduit
+    - http-client
+    - bytestring
