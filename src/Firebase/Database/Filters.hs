@@ -22,13 +22,12 @@ import qualified Data.ByteString.Char8 as C8
 
 
 {-|
-  Convert 'Filter' to a 'Network.HTTP.Simple.Query' which is
-  @[(@'Data.ByteString.ByteString'@, @'Maybe'@ @'Data.ByteString.ByteString'@)]@.
+  Convert 'Filter' to a 'S.Query'.
 
-  For 'EmptyFilter' filter it returns @[]@. For 'Shallow' filter it returns
-  @["shallow", @'Just'@ "true"]@. If you pass 'ComplexFilter', it returns
-  concatenation of 'filterOrderBy', 'filterStartAt', 'filterEndAt',
-  'filterEqualTo', and 'filterLimit'.
+    * For 'EmptyFilter' filter it returns @[]@.
+    * For 'Shallow' filter it returns @["shallow", @'Just'@ "true"]@.
+    * If you pass 'ComplexFilter', it returns concatenation of 'filterOrderBy',
+      'filterStartAt', 'filterEndAt', 'filterEqualTo', and 'filterLimit'.
 -}
 filterParams :: Filter -> S.Query
 filterParams EmptyFilter = []
@@ -42,14 +41,14 @@ filterParams (ComplexFilter ob sa ea et lm) =
 
 
 {-|
-  Convert 'Maybe' 'OrderBy' to a 'Network.HTTP.Simple.Query'.
+  Convert 'Maybe' 'OrderBy' to a 'S.Query'.
   
-  If the first argument is 'Nothing', it returns in @[]@.
-  
-  If the first argument is 'Just' 'OrderBy', it returns
-  'encodeQueryParam' @"orderBy" (@'show'@ x)@ for 'Child' @x@,
-  'encodeQueryParam'@ "orderBy" (@'show' @"$key")@ for 'Key', and
-  'encodeQueryParam'@ "orderBy" (@'show' @"$value")@ for 'Val'.
+    * If the first argument is 'Nothing', it returns empty list @[]@.
+    * If the first argument is 'Just' 'OrderBy', it returns
+
+        * 'encodeQueryParam'@ "orderBy" (@'show' @x)@ for 'Child' @x@,
+        * 'encodeQueryParam'@ "orderBy" (@'show' @"$key")@ for 'Key',
+        * and 'encodeQueryParam'@ "orderBy" (@'show' @"$value")@ for 'Val'.
 -}
 filterOrderBy :: Maybe OrderBy -> S.Query
 filterOrderBy Nothing = []
@@ -60,12 +59,11 @@ filterOrderBy (Just ob) = encodeQueryParam "orderBy" (show t)
               Val     -> "$value"
 
 {-|
-  Convert 'Maybe' 'Param' to a 'Network.HTTP.Simple.Query'.
+  Convert 'Maybe' 'Param' to a 'S.Query'.
   
-  If the first argument is 'Nothing', it returns in @[]@.
-  
-  If the first argument is 'Just' 'Param' it returns
-  'encodeQueryParam'@ "startAt" sa@.
+    * If the first argument is 'Nothing', it returns empty list @[]@.
+    * If the first argument is 'Just' @(@'Param' @sa)@ it returns
+      'encodeQueryParam'@ "startAt" sa@.
 -}
 filterStartAt :: Maybe Param -> S.Query
 filterStartAt Nothing = []
@@ -73,37 +71,35 @@ filterStartAt (Just (Param sa)) = encodeQueryParam "startAt" sa
 
 
 {-|
-  Convert 'Maybe' 'Param' to a 'Network.HTTP.Simple.Query'.
+  Convert 'Maybe' 'Param' to a 'S.Query'.
   
-  If the first argument is 'Nothing', it returns in @[]@.
-  
-  If the first argument is 'Just' 'Param' it returns
-  'encodeQueryParam'@ "endAt" ea@.
+    * If the first argument is 'Nothing', it returns empty list @[]@.
+    * If the first argument is 'Just' @(@'Param' @ea)@ it returns
+    'encodeQueryParam'@ "endAt" ea@.
 -}
 filterEndAt :: Maybe Param -> S.Query
 filterEndAt Nothing = []
 filterEndAt (Just (Param ea)) = encodeQueryParam "endAt" ea
 
 {-|
-  Convert 'Maybe' 'Param' to a 'Network.HTTP.Simple.Query'.
+  Convert 'Maybe' 'Param' to a 'S.Query'.
   
-  If the first argument is 'Nothing', it returns in @[]@.
-  
-  If the first argument is 'Just' 'Param' it returns
-  'encodeQueryParam'@ "equalTo" et@.
+    * If the first argument is 'Nothing', it returns empty list @[]@.
+    * If the first argument is 'Just' @(@'Param' @et)@ it returns
+    'encodeQueryParam'@ "equalTo" et@.
 -}
 filterEqualTo :: Maybe Param -> S.Query
 filterEqualTo Nothing = []
 filterEqualTo (Just (Param et)) = encodeQueryParam "equalTo" et
 
 {-|
-  Convert 'Maybe' 'FbLimit' to a 'Network.HTTP.Simple.Query'.
+  Convert 'Maybe' 'FbLimit' to a 'S.Query'.
   
-  If the first argument is 'Nothing', it returns in @[]@.
-  
-  If the first argument is 'Just' 'FbLimit', it returns
-  'encodeQueryParam'@ "limitToFirst" x@ for 'Just'@ (@'ToFirst'@ x)@,
-  and 'encodeQueryParam'@ "limitToLast" x@ for 'Just'@ (@'ToLast'@ x)@.
+    * If the first argument is 'Nothing', it returns empty list @[]@.
+    * If the first argument is 'Just' 'FbLimit', it returns
+
+        * 'encodeQueryParam'@ "limitToFirst" x@ for 'Just'@ (@'ToFirst'@ x)@,
+        * and 'encodeQueryParam'@ "limitToLast" x@ for 'Just'@ (@'ToLast'@ x)@.
 -}
 filterLimit :: Maybe FbLimit -> S.Query
 filterLimit Nothing = []
@@ -113,11 +109,10 @@ filterLimit (Just (ToLast x)) = encodeQueryParam "limitToLast" x
 
 {-|
   Take name and value of a query parameter and encode it to a
-  'Network.HTTP.Simple.Query'. Value has to be an instance of
-  'Web.HttpApiData.ToHttpApiData' type class.
+  'S.Query'.
 -}
 encodeQueryParam :: ToHttpApiData a =>
                     String     -- ^ Name of the query parameter
                     -> a       -- ^ Value of the query parameter
-                    -> S.Query -- ^ Resulting encoded query parameter of the type @[(@'Data.ByteString.ByteString'@, @'Maybe'@ @'Data.ByteString.ByteString'@)]@
+                    -> S.Query -- ^ Resulting encoded query parameter
 encodeQueryParam k v = [(C8.pack k, Just $ E.encodeUtf8 . toQueryParam $ v)]
