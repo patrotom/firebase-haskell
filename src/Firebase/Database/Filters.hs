@@ -1,16 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-Module      : Filters
-Description : Generating filter query parameters.
-Copyright   : (c) Tomas Patro, 2020
-License     : MIT
-Maintainer  : tomas.patro@gmail.com
-Stability   : experimental
-Portability : POSIX
+  Module      : Filters
+  Description : Generating filter query parameters.
+  Copyright   : (c) Tomas Patro, 2020
+  License     : MIT
+  Maintainer  : tomas.patro@gmail.com
+  Stability   : experimental
+  Portability : POSIX
 
-Functionality for generating query parameters which are used as filters in
-Firebase Database requests.
+  Functionality for generating query parameters which are used as filters in
+  Firebase Database requests.
 -}
 module Firebase.Database.Filters where
 

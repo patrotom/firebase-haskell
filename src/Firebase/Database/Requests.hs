@@ -1,19 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-|
-Module      : Requests
-Description : Firebase Database REST requests.
-Copyright   : (c) Tomas Patro, 2020
-License     : MIT
-Maintainer  : tomas.patro@gmail.com
-Stability   : experimental
-Portability : POSIX
+  Module      : Requests
+  Description : Firebase Database REST requests.
+  Copyright   : (c) Tomas Patro, 2020
+  License     : MIT
+  Maintainer  : tomas.patro@gmail.com
+  Stability   : experimental
+  Portability : POSIX
 
-You can use these functions to generate a particular request to Firebase Database
-or to generate a common request which contains the common attributes of rest of
-the requests.
+  You can use these functions to generate a particular request to Firebase Database
+  or to generate a common request which contains the common attributes of rest of
+  the requests.
 
-For more information see [Firebase Database REST API Documentation](https://firebase.google.com/docs/database/rest/start).
+  For more information see [Firebase Database REST API Documentation](https://firebase.google.com/docs/database/rest/start).
 -}
 module Firebase.Database.Requests where
 

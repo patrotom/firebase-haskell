@@ -14,8 +14,8 @@ dbQuery :: DbMethod    ->
            Filter      ->
            RequestBody ->
            IO Value
-dbQuery req conf loc qr body = do
-  let request = dbQueryP req conf loc qr body
+dbQuery req conf loc fil body = do
+  let request = dbQueryP req conf loc fil body
   response <- S.httpJSON request
   return (S.getResponseBody response :: Value)
 
@@ -25,7 +25,7 @@ dbQueryP :: DbMethod    ->
             Filter      ->
             RequestBody ->
             S.Request
-dbQueryP req conf loc qr body =
+dbQueryP req conf loc fil body =
   case req of
     Read   -> FR.fbRead url par
     Write  -> FR.fbWrite url par body
@@ -33,7 +33,7 @@ dbQueryP req conf loc qr body =
     Update -> FR.fbUpdate url par body
     Delete -> FR.fbDelete url par
   where url  = U.dbUrl (projectId conf) loc
-        par  = U.dbParams (authToken conf) qr
+        par  = U.dbParams (authToken conf) fil
 
 complexFilter :: Filter
 complexFilter = ComplexFilter { fOrderBy = Nothing
